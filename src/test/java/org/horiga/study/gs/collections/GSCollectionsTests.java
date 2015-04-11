@@ -13,7 +13,6 @@ import com.google.common.base.Joiner;
 import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.block.function.Function2;
 import com.gs.collections.api.block.predicate.Predicate;
-import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.block.factory.Predicates;
 import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.list.mutable.ListAdapter;
@@ -25,18 +24,15 @@ import lombok.experimental.Builder;
 
 public class GSCollectionsTests
 {
-
 	@Test
 	public void selectAndRejectPatterns() {
 		List<Integer> numbers = new ArrayList<Integer>();
 		IntStream.range(0, 100).forEach(n -> {
 			numbers.add(RandomUtils.nextInt(0, 100));
 		});
-		MutableList<Integer> selectedGreaterThan70 = ListAdapter.adapt(numbers).select(Predicates.greaterThan(70));
-		System.out.println("selected > 70 : " + Joiner.on(",").join(selectedGreaterThan70));
 
-		MutableList<Integer> rejectedGreaterThan70 = ListAdapter.adapt(numbers).reject(Predicates.greaterThan(70));
-		System.out.println("rejected > 70 : " + Joiner.on(",").join(rejectedGreaterThan70));
+		p("selected > 70", ListAdapter.adapt(numbers).select(Predicates.greaterThan(70)));
+		p("rejected > 70", ListAdapter.adapt(numbers).reject(Predicates.greaterThan(70)));
 	}
 
 	@Test
@@ -44,8 +40,8 @@ public class GSCollectionsTests
 		PartitionFastList<Profile> partitionByActives = newProfiles(50).partition(p -> {
 			return p.isActive();
 		});
-		System.out.println("selected: " + Joiner.on(",").join(partitionByActives.getSelected()));
-		System.out.println("rejected: " + Joiner.on(",").join(partitionByActives.getRejected()));
+		p("partition/selected", partitionByActives.getSelected());
+		p("partition/rejected", partitionByActives.getRejected());
 	}
 
 	@SuppressWarnings("serial")
